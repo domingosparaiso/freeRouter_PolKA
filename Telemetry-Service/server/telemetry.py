@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+from datetime import datetime
 import pika
 from config_mq import config_rabbitmq, rabbitmq_host, rabbitmq_telemetry_queue
 import os
@@ -43,33 +44,69 @@ def get_point(previous_value, next_value, previous_time, next_time, actual_time)
     actual_value = previous_value + diff
     return actual_value
 
-def get_data(datalake, data_index, start_time_str, end_time_str, interval_str):
-    cache = datalake.get(data_index)
+def get_data(datalake, index, start_time, end_time, interval):
+    # index == '*' => all indexes
     result = {}
-    if cache != None:
-        cache_lst = [*cache.items()]
-        count = 0
-        start_time = float(start_time_str)
-        end_time = float(end_time_str)
-        interval = float(interval_str)
-        while count<len(cache_lst) and start_time < cache_lst[count][0]:
-            previous_time = cache_lst[count][0]
-            previous_value = cache_lst[count][1]
-            count = count + 1
-        if count<len(cache_lst) and start_time >= cache_lst[count][0]:
-            actual_time = start_time
-            while count<len(cache_lst) and end_time > cache_lst[count][0]:
-                next_time = cache_lst[count][0]
-                next_value = cache_lst[count][1]
-                while actual_time < cache_lst[count][0]:
-                    # value (interpolate)
-                    #  <previous_time>.....<actual_time>.....<actual_time+n>.....<next_time>
-                    actual_value = get_point(previous_value, next_value, previous_time, next_time, actual_time)
-                    result.update({ actual_time: actual_value})
-                    actual_time = actual_time + interval
+    if index == '*':
+        index_array = datalake.keys()
+    else:
+        index_array = [ index ]
+    for data_index in index_array:
+        data_result = {}
+        cache = datalake.get(data_index)
+        if cache != None:
+            cache_lst = [*cache.items()]
+            count = 0
+            while count<len(cache_lst) and start_time < cache_lst[count][0]:
                 previous_time = cache_lst[count][0]
                 previous_value = cache_lst[count][1]
                 count = count + 1
+            if count<len(cache_lst) and start_time >= cache_lst[count][0]:
+                actual_time = start_time
+                while count<len(cache_lst) and end_time > cache_lst[count][0]:
+                    next_time = cache_lst[count][0]
+                    next_value = cache_lst[count][1]
+                    while actual_time < cache_lst[count][0]:
+                        # value (interpolate)
+                        #  <previous_time>.....<actual_time>.....<actual_time+n>.....<next_time>
+                        actual_value = get_point(previous_value, next_value, previous_time, next_time, actual_time)
+                        data_result.update({ actual_time: actual_value})
+                        actual_time = actual_time + interval
+                    previous_time = cache_lst[count][0]
+                    previous_value = cache_lst[count][1]
+                    count = count + 1
+        result.update( { data_index: data_result } )
+    return result
+
+def stringtime(timestamp):
+    # time values
+    #    * = now
+    #    -<val><time> = back in time, where val=number and time=h(hour),m(minute),s(second)
+    #        ex: -3m  (now - 3 minutes)
+    #            -40s (now - 40 seconds)
+    if timestamp == '*':
+        result = datetime.timestamp(datetime.now())
+    else:
+        if timestamp[0:1] == '-':
+            val = timestamp[1:-1]
+            uni = timestamp[-1:]
+            factor = 0
+            if uni == 's':
+                factor = 1
+            if uni == 'm':
+                factor = 60
+            if uni == 'h':
+                factor = 3600
+            try:
+                value = float(val)
+            except:
+                value = 0
+            result = datetime.timestamp(datetime.now()) - ( value * factor )
+        else:
+            try:
+                result = float(timestamp)
+            except:
+                result = 0
     return result
 
 def callback_telemetry(ch, method, properties, body):
@@ -105,16 +142,10 @@ def callback_telemetry(ch, method, properties, body):
                 if len(params) >= 7:
                     client_queue = params[2].strip()
                     telemetry_type = params[3].strip()
-                    # * = all indexes
                     index_name = params[4].strip()
-                    # time values
-                    #    * = now
-                    #    -<val><time> = back in time, where val=number and time=h(hour),m(minute),s(second)
-                    #        ex: -3m  (now - 3 minutes)
-                    #            -40s (now - 40 seconds)
-                    start_time = params[5].strip()
-                    end_time = params[6].strip()
-                    interval = params[7].strip()
+                    start_time = stringtime(params[5].strip())
+                    end_time = stringtime(params[6].strip())
+                    interval = stringtime(params[7].strip())
                     result = None
                     if telemetry_type == 'latency':
                         #[0]telemetry;[1]get;[2]<client-queue>;[3]latency;[4]<index-name>[5]<start-time>;[6]<end-time>;[7]<interval-in-seconds>
@@ -126,12 +157,13 @@ def callback_telemetry(ch, method, properties, body):
                         #[0]telemetry;[1]get;[2]<client-queue>;[3]flowrate;[4]<index-name>[5]<start-time>;[6]<end-time>;[7]<interval-in-seconds>
                         result = get_data(FLOWRATE_DATA, index_name, start_time, end_time, interval)
                     if result != None:
-                        result_text_list = []
-                        for f in result.values():
-                            result_text_list.append(str(f))
-                        result_list = ",".join(result_text_list)
-                        body = "telemetry;" + telemetry_type + ";" + index_name + ";" + start_time + ";" + end_time + ";" + interval + ";" + result_list
-                        send_mq_client(client_queue, body)
+                        for name, val_dict in result.items():
+                            result_text_list = []
+                            for f in val_dict.values():
+                                result_text_list.append(str(f))
+                            result_list = ",".join(result_text_list)
+                            body = "telemetry;" + telemetry_type + ";" + name + ";" + str(start_time) + ";" + str(end_time) + ";" + str(interval) + ";" + result_list
+                            send_mq_client(client_queue, body)
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 LATENCY_DATA = {}

@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 from multiprocessing import Process
+from datetime import datetime
 import sys
 import pika
 from config_mq import config_rabbitmq, rabbitmq_host, rabbitmq_router_queue, rabbitmq_client_queue, rabbitmq_telemetry_queue
 import os
 from flask import Flask, request, render_template
 
-MAX_POINTS = 100
+MAX_POINTS = 120
 
 if not config_rabbitmq(['ROUTER','CLIENT','TELEMETRY']):
     print("Error in config file.")
@@ -49,7 +50,7 @@ def update_router():
     channel.close()
     channel = connection.channel()
     channel.queue_declare(queue=rabbitmq_telemetry_queue(), durable=False)
-    body = f"telemetry;get;{CLIENT_QUEUE};latency;*;*;-5m;1"
+    body = f"telemetry;get;{CLIENT_QUEUE};latency;*;-2m;*;1"
     #[0]telemetry;[1]get;[2]<client-queue>;[3]latency;[4]<index-name>[5]<start-time>;[6]<end-time>;[7]<interval-in-seconds>
     channel.basic_publish(exchange="", routing_key=rabbitmq_telemetry_queue(), properties=pika.BasicProperties(expiration='10000',), body=body)
 #    router = None
@@ -130,41 +131,32 @@ def set_data(datalake, index, value, datatype):
     save_table("data-" + datatype + ".txt", contents)
     return
 
-def callback_telemetry(ch, method, properties, body):
-    print(f" [*] Received {body.decode()}")
-    params = body.decode().split(';')
-    if len(params) > 0:
-        command = params[0].strip()
-        if command == 'telemetry':
-            if params[1].strip() == 'latency':
-                if len(params) >= 5:
-                    #telemetry;latency;<src>;<dst>;<latency>;<timestamp>
-                    node = params[2]
-                    dest = params[3]
-                    ltnc = params[4]
-                    tims = params[5]
-                    set_data(LATENCY_DATA, node + "-" + dest, ltnc, 'latency')
-            if params[1] == 'bandwidth':
-                if len(params) >= 5:
-                    #telemetry;bandwidth;<node>;<ethernet>;<bps>
-                    node = params[2]
-                    ethv = params[3]
-                    btps = params[4]
-                    set_data(FLOW_DATA, node + ":" + ethv, btps, 'bandwidth')
-    ch.basic_ack(delivery_tag=method.delivery_tag)
-
 def callback_client(ch, method, properties, body):
     # print(f" [x] Received:\n{body.decode()}")
     # print(" [x] Done")
     text_line=body.decode()
-    itens=text_line.split(";")
-    if itens[0]=="list":
-        if itens[1]=="router":
+    itens=text_line.split(';')
+    if itens[0].strip() == 'list':
+        if itens[1].strip() == 'router':
             table_router(text_line)
-        if itens[1]=="tunnel":
+        if itens[1].strip() == 'tunnel':
             table_tunnel(text_line)
-        if itens[1]=="accesslist":
+        if itens[1].strip() == 'accesslist':
             table_accesslist(text_line)
+    if itens[0].strip() == 'telemetry':
+        if itens[1].strip() == 'latency' or itens[1].strip() == 'bandwidth':
+            if len(itens) >= 5:
+                #telemetry;<latency|bandwidth>;<node>;<start>;<end>;<interval>;<data_list>
+                node = itens[2]
+                start_time = itens[3]
+                end_time = itens[4]
+                interval = itens[5]
+                data_list = itens[6].split(',')
+                for data_item in data_list:
+                    if itens[1].strip() == 'latency':
+                        set_data(LATENCY_DATA, node, data_item, 'latency')
+                    else:
+                        set_data(FLOW_DATA, node, data_item, 'bandwidth')
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 def table_router(txt):
@@ -216,28 +208,9 @@ def client_update():
     channel2.basic_consume(on_message_callback=callback_client, queue=rabbitmq_client_queue())
     channel2.start_consuming()
 
-def telemetry_update():
-    # Client Channel
-    LATENCY_DATA = {}
-    FLOW_DATA = {}
-    connection3 = pika.BlockingConnection(
-        pika.ConnectionParameters(host=rabbitmq_host()),
-    )
-    channel3 = connection3.channel()
-    channel3.queue_declare(queue=rabbitmq_telemetry_queue(), durable=False)
-    print(" [*] Waiting for messages on " + rabbitmq_telemetry_queue() + ". To exit press CTRL+C")
-
-    channel3.basic_qos(prefetch_count=1)
-    channel3.basic_consume(on_message_callback=callback_telemetry, queue=rabbitmq_telemetry_queue())
-    channel3.start_consuming()
-
 LATENCY_DATA = {}
 FLOW_DATA = {}
 p1 = Process(target=client_update)
-p2 = Process(target=telemetry_update)
 p1.start()
-p2.start()
 app.run(debug=True, host="0.0.0.0") # Executa a aplicação Flask
 p1.join()
-p2.join()
-
