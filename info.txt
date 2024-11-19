@@ -1,0 +1,20 @@
+MIA_edge#show int tunnel1 rates                                                                                                                                     
+       packet        byte
+time   tx  rx  drop  tx  rx  drop
+1sec   0   0   0     0   0   0
+1min   0   0   0     0   0   0
+1hour  0   0   0     0   0   0
+
+MIA_edge#                                                                                                                                                           
+
+MIA_edge#show interfaces total                                                                                                                                      
+interface  state  tx    rx  drop
+template1  admin  0     0   2440
+loopback0  up     2440  0   0
+ethernet1  up     6544  0   0
+ethernet2  up     6544  0   0
+tunnel1    down   0     0   0
+tunnel2    down   0     0   0
+tunnel3    down   0     0   0
+
+

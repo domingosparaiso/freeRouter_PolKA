@@ -1,0 +1,640 @@
+VIT0071#show running-config
+hostname VIT0071
+buggy
+!
+logging buffered debug 10240
+logging file debug /var/log/freertr.log
+logging rotate 655360000 /var/log/freertr.old
+!
+crypto rsakey rsa import $v10$TUlJRXBRSUJBQUtDQVFFQTRTRXVjWk5lRWdiMy8wa2E2cEI3aU03U0tOUlBLcXB0TXEvRjU0cm5nZVQ3Yk1qRS90L0NXb1lYUi9hbytFYnVialhzbjNYVFZndFZZVGxPZW1aU1ovQ3dLYmpWUHZLSGFuZzFEdnNRUnZDV3pONXZCM01MTUY3MWpxVDA2VUxIRUpvaE11eS9kVmpaRlpKWWZUZDV3dmNvSGY1QVFaM3BVOFQ0VE9rSzI4RkJQQzYvTkMrTzhlWldUMkRwVXlzTEVHaG1MSXZLQ1N5MVBDdnVlUU5ReGo5SVBNSXRGbDZTemQvR1UrM3h1bHRHTHVTZzFjd0RyTzRwVlE2SU84TDFQUW13bjFaZlExdUthVjdrcjVRVXBxUndiak1XeHN6cGkveXZKK1p6VThCa0NyQnpuUjdkQlpFcjQ2dlJlM3NvTklQR2IzM3gvYUtlT3pOTFlta3k0d0lEQVFBQkFvSUJBRWszZzJWSXFqVnVzc1VCdjVFOXdBOTBSQUVuV3ovakFYU1VtZVo5MUdENFdaUzlqdVBkWGRZVytnZGJmd1NQL1FjMjNtZlY2QTk1ekNDOGhIdG1QN0t5SW5qUE5mc3M0VUdOS3FSZW5xS1RxRmVrbDdOeWhOY01hd3dqTmN1Ty9qSzJEY29FR1JoTzl2ci9CMnhoMkdYQi8vZ1JNbENrekxlRHZjVTFuV1J1VHh3bng1c1ZmTjZmNldXY094Vm1KaVZsREt5c3dSeC9xRm9LeHJqbktTbDVTM0JwR2Z4V3E3OWVaNExza1BZaURuQnJCeDgzTHIwUVYzdEhnSEpSS1FKOURReEQ5TVFSZ210ZUZoQ0p3SDZyWWNZL3FjUWpoYmwybTY5Rk5zWU1CdUpVa2ZHdk9nbWxuSHludlpPRmdtdkt0d05ncFdnaitSTktOZEZrZWxFQ2dZRUEvdC8wU01Tckh5TXVIM090TkNiSFNBbzU2QXdmb1RQK09DNnYranhnSTRVUnFNWEd2M3F5anljY2NReHRJdmZnMkZlNXMxeXpEVE1ydU52L1hZRzBOMUNTMS9KVk15WGdkQ3VXcHh6cW1NVFNvdG1YbmIrc1p4bHZtMFZCTEIwS3FoaFFnZlBqQkpnN3ZQQWRQNUdUeTlrdFdBTlZ6SHViYWxxUTZ2eVV3SzhDZ1lFQTRoK2NXcTRhM0pPa0F3QStXbUFrVFVBNlZhYzlVZEttYTBHUzZPRGdLdElldmhKeHpYeFc4Nytmckp0RUlVcEMxZmdib1p2L1d5d0RHWEpTUTFQSEVhcjB4aW5KSGYxMDNBQ0ZSazh2NWJlSzd2bW1UbkNMQmhNdVAvMmlvcUFibDJ4WEFTMFRRSUMvWGlndmxjcEJDT080TnR2cEFnU3dvem9zQ0RIUnRnMENnWUVBclNpZ1FiUUVBbktYU2x6L3hwZTErbmFnSXN2aHpWYVNsNzc0WmcwUXovRC9MMmUzQUs0dWs5MWhrRmg5NlN6NVFHSlJVczlmQWsvS201d3pvV2FXZHFJeU1hNTlQZk8weTVnMWtUR3ZITDFUMGJuOUxQcGsrZUtwRlpkMmtLN21hT3Q5L3R3Z1Z5WEtLRElGM1FOZG96ZlllNXhBZFYxaEdGK1JaMlRVOXhjQ2dZRUEwSlhrUHVtM3NaMG5mL1VyajJaOFZoNVhNVWV5RXRaRDJWQ0YyZmdHRUxuK3pjcHAyK2xFdEZnaFRMRjFLVmc5U3U4eFhlUnVxNFZ2M250TVV2cm0rTzlBRjhQWDE2aERzZVZ4Q3loa3dIeU0xbURIL2pkbXB0WHVwZXlycDJRVno1cUtyM1VLKzBkSVArekY2R0RIbVJHbWprUlJMaUZ4WjBCeithTXJGY2tDZ1lFQXE3OVpQWnBTODVGUjhnZ2xpT21UbGpiM1EwNHBZTUQvY0EvUTIvOVNqb0docHFOamMxa0MrK3Flb1l4U0xaUzJrcHQ2cVJMN0c0Q2lDQ0FtYmN3bTMrR2ZYRDlFSElIRlB0a1dTa1dJN3llYjQra0x2SGpQaGZ5cFhYWHJrbERaSCtxZVhmbS90VmUxZlNGM1R4UFdxOUJCMktOODVKaXdUTVZlbmEzMWFEMD0=
+!
+crypto dsakey dsa import $v10$TUlJQnVRSUJBQUtCZ0N4Mm9rK1BMTmlhVHpZcTdubTA5Y3pJUEZVTWIzcm1CUlRGMEtRRWpvY0F2NWdoSUZhV0FnQllwMGk2a1NvSitoM2N5SSt5RDBNNG5YQnN0bkRMd0dJaFJpOG5kLzk0SFJqV0Zrb3ZCZ2Ixakh4SFZ4T0hwd2QzeHl2TXpNekZxZVlnV0NSRGhoMmdXc2hYbDZNSXBTQkJoNzJESGYzNG4rcGJpb1FadHl1SkFoVUErRlVVWXkzMjlHRFJsc2FaRkNqL0dabjdoSDBDZ1lBS0JtRDJYR2h0WWhMVm54NGdqNGIwUktkODZydXZka1R2Ym1GYS9CLzJwcWorSGF3Nk1IaEZ2c3BxTUI1M2N2R3JSeGw4bHBiWjZpR2tQdVJGVlN0Wjd0TXNNdFE0U1ZONkNGTWw1TmI1SlBLTk1UcDlnT2VYZGI0ZEMxYkpLcDhuMmxBcXhUc0lYeE9vNUVGZGpwcGJUVTdSZi9YZGxDSG0rck5Ob2FmQnhRS0JnQWNBcGVhTzc2aDI3ckVBZUdsWTc2MFZvK0tZcDZ0bnpleGJIOUpTVGhieUpkdXIyZGc4QXl5cUNGWHVUWlRHNTBhS04xbjNmVWdBNWZKTENWRExOaktYbU5mT29UUG5SSVhoQzlySVVQZUNMeEduVktDUlNoNjdwcytxZmxsSm1Qb0N2RE92eG13bUgwNmUwYnoyMmVWL2U3ai9rM1RFR25TQ0tLMkd5VFpkQWhSYXNuWC95UDQ4V0Zaa0kvWldtQlgraksxQ3lnPT0=
+!
+crypto ecdsakey ecdsa import $v10$TUhRQ0FRRUVJQUNDY3RKZG5DZlZhMVZjdjRZZ2ZtTGdHZFBiaUdPOTdJMldwQU1DaExrT29BY0dCU3VCQkFBS29VUURRZ0FFSkM5QXJzRDF1Vnc0cWg3eVJWcjFRNzlwdVdOZkZ2WGtMNTg3L3RHZlhscHQ5RUQ0cDRHcEFLWUh6ZmU1dFhIaUt5ZVVFR05paXdMNEc1UVhzMW8yZHc9PQ==
+!
+crypto ipsec WG-NMAAS
+ key $v10$R0wrY1lnTEVzOUM2ZWxZckJzTExwNHoxVUYweFVndk5zY05EUkpzQTUyMD1Jc3dYK3ROY0p6cHNtaWR4cC9sdkRrVXJlUURHaEdNRVRrTFJNUlUwTm4wPQ==
+ replay 0
+ exit
+!
+aaa userlist usr
+ username rare
+ username rare password $v10$cmFyZQ==
+ exit
+!
+scheduler errors
+ time 600000
+ delay 30000
+ command clear errors gp4l-err@listes.renater.fr
+ start
+ exit
+!
+access-list allow-mgmt
+ sequence 10 permit all 200.130.25.172 255.255.255.255 all any all
+ sequence 20 permit all 195.98.239.132 255.255.255.255 all any all
+ sequence 30 permit all 82.64.61.37 255.255.255.255 all any all
+ sequence 123 permit all 172.16.11.0 255.255.255.0 all any all
+ sequence 124 permit all 192.168.113.0 255.255.255.0 all any all
+ sequence 125 permit all 10.160.0.0 255.255.255.0 all any all
+ sequence 126 permit all 192.168.0.0 255.255.255.0 all any all
+ sequence 999 deny all any all any all
+ exit
+!
+access-list ALLOW-NMAAS-BASTION
+ sequence 123 permit all 172.16.11.0 255.255.255.0 all any all
+ sequence 124 permit all 192.168.113.0 255.255.255.0 all any all
+ sequence 125 permit all 10.160.0.0 255.255.255.0 all any all
+ sequence 999 deny all any all any all
+ exit
+!
+access-list TESTE
+ sequence 10 permit 0 99.99.99.0 255.255.255.252 all 99.99.99.0 255.255.255.252 all
+ exit
+!
+prefix-list all4
+ sequence 10 permit 0.0.0.0/0 ge 0 le 0
+ exit
+!
+prefix-list all6
+ sequence 10 permit ::/0 ge 0 le 0
+ exit
+!
+vrf definition CORE
+ iface4start 1000
+ iface6start 1000
+ exit
+!
+vrf definition INB_MGNT
+ rd 20965:17
+ rt4import 20965:1
+ rt4export 20965:1
+ rt6import 20965:1
+ rt6export 20965:1
+ exit
+!
+vrf definition lin
+ exit
+!
+vrf definition oob
+ exit
+!
+vrf definition p4
+ description P4 VRF _NEVER_EVER_ CONFIGURE IT
+ exit
+!
+router ospf4 1
+ vrf CORE
+ router-id 10.17.17.17
+ traffeng-id 0.0.0.0
+ segrout 100
+ bier 256 100
+ area 0 enable
+ area 0 spf-bidir
+ area 0 segrout
+ area 0 bier
+ exit
+!
+router ospf6 1
+ vrf CORE
+ router-id 10.17.17.17
+ traffeng-id ::
+ segrout 100
+ bier 256 100
+ area 0 enable
+ area 0 segrout
+ area 0 bier
+ exit
+!
+interface template1
+ description core links
+ lldp enable
+ vrf forwarding CORE
+ ipv4 address dynamic dynamic
+ ipv4 pim enable
+ ipv4 pim bier-tunnel 17
+ ipv4 pim join-source loopback0
+ ipv6 address dynamic dynamic
+ ipv6 enable
+ ipv6 pim enable
+ ipv6 pim bier-tunnel 17
+ polka enable 17 65536 100
+ mpls enable
+ mpls rsvp4
+ mpls rsvp6
+ router ospf4 1 enable
+ router ospf4 1 area 0
+ router ospf4 1 suppress-prefix
+ router ospf4 1 segrout index 17
+ router ospf4 1 bier index 17
+ router ospf6 1 enable
+ router ospf6 1 area 0
+ router ospf6 1 suppress-prefix
+ router ospf6 1 segrout index 17
+ router ospf6 1 bier index 17
+ shutdown
+ no log-link-change
+ exit
+!
+interface loopback0
+ description VIT0071@lo0
+ vrf forwarding CORE
+ ipv4 address 10.17.17.17 255.255.255.255
+ ipv6 address fd00:51e5:7e69::a:11:11:11 ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+ template template1
+ router ospf4 1 unsuppress-prefix
+ router ospf6 1 unsuppress-prefix
+ no shutdown
+ exit
+!
+interface loopback20965
+ vrf forwarding INB_MGNT
+ ipv4 address 172.16.66.17 255.255.255.255
+ no shutdown
+ no log-link-change
+ exit
+!
+interface ethernet0
+ description CPU_PORT _NEVER_EVER_ CONFIGURE IT
+ no shutdown
+ no log-link-change
+ exit
+!
+interface ethernet1
+ description OOB-Mgmt-Interface
+ vrf forwarding oob
+ ipv4 address 10.160.0.20 255.255.255.0
+ no shutdown
+ no log-link-change
+ exit
+!
+interface ethernet2
+ description linux tuntap management interface
+ vrf forwarding lin
+ ipv4 address 10.255.255.254 255.255.255.0
+ no shutdown
+ no log-link-change
+ exit
+!
+interface sdn10
+ mtu 9000
+ macaddr 001f.3901.5779
+ lldp enable
+ vrf forwarding CORE
+ ipv4 address 10.0.171.1 255.255.255.0
+ no shutdown
+ no log-link-change
+ exit
+!
+interface sdn1001
+ mtu 9000
+ macaddr 0073.4224.2a07
+ lldp enable
+ no shutdown
+ no log-link-change
+ exit
+!
+interface sdn1001.459
+ description VIT0021@sdn1001.459 -> RIO0021@sdn49.459 [RNP-ES-RJ]
+ mtu 9000
+ vrf forwarding CORE
+ ipv4 address 10.11.17.2 255.255.255.0
+ ipv6 address fd00:77c:77c::a:b:11:2 ffff:ffff:ffff:ffff:ffff:ffff:ffff:ff00
+ template template1
+ no shutdown
+ exit
+!
+interface sdn1001.462
+ description VIT0071@sdn1001.462 -> BHZ0001@sdN.462 [RNP-ES-MG]
+ mtu 9000
+ vrf forwarding CORE
+ ipv4 address 10.17.45.1 255.255.255.0
+ ipv6 address fd00:77c:77c::a:b:11:1 ffff:ffff:ffff:ffff:ffff:ffff:ffff:ff00
+ template template1
+ no shutdown
+ exit
+!
+interface sdn1002
+ mtu 9000
+ macaddr 0017.2008.706c
+ lldp enable
+ vrf forwarding CORE
+ no shutdown
+ no log-link-change
+ exit
+!
+interface sdn1003
+ mtu 9000
+ macaddr 0055.4f7b.4126
+ lldp enable
+ vrf forwarding CORE
+ ipv4 address 10.0.17.1 255.255.255.0
+ ipv4 pim enable
+ ipv4 pim bier-tunnel 17
+ ipv4 pim join-source loopback0
+ polka enable 17 65536 100
+ mpls enable
+ mpls rsvp4
+ router ospf4 1 enable
+ router ospf4 1 area 0
+ no shutdown
+ no log-link-change
+ exit
+!
+interface sdn1004
+ mtu 1500
+ macaddr 0061.7276.074c
+ lldp enable
+ vrf forwarding CORE
+ no shutdown
+ no log-link-change
+ exit
+!
+interface sdn1101
+ description TESTE MOISES
+ mtu 9000
+ macaddr 004b.4062.0908
+ lldp enable
+ vrf forwarding CORE
+ ipv4 address 10.111.111.1 255.255.255.0
+ router ospf4 1 enable
+ router ospf4 1 area 0
+ no shutdown
+ no log-link-change
+ exit
+!
+interface sdn1201
+ description TESTE MOISES
+ mtu 9000
+ macaddr 0043.5d4e.5d2e
+ lldp enable
+ vrf forwarding CORE
+ ipv4 address 10.112.112.1 255.255.255.0
+ router ospf4 1 enable
+ router ospf4 1 area 0
+ no shutdown
+ no log-link-change
+ exit
+!
+interface sdn9
+ mtu 1500
+ macaddr 0001.2577.376c
+ lldp enable
+ vrf forwarding CORE
+ ipv4 address 10.0.17.1 255.255.255.0
+ no shutdown
+ no log-link-change
+ exit
+!
+interface tunnel123
+ description WG-NMAAS
+ tunnel key 9022
+ tunnel vrf oob
+ tunnel protection WG-NMAAS
+ tunnel source ethernet1
+ tunnel destination 150.254.160.146
+ tunnel mode wireguard
+ vrf forwarding oob
+ ipv4 address 192.168.250.174 255.255.255.252
+ no shutdown
+ no log-link-change
+ exit
+!
+interface tunnel1517
+ description POLKA tunnel from MIA0001[=15]->VIT0071[17]
+ tunnel vrf CORE
+ tunnel source loopback0
+ tunnel destination 10.15.15.15
+ tunnel domain-name 10.11.11.11 10.16.16.16
+ tunnel mode polka
+ vrf forwarding CORE
+ ipv4 address 30.15.17.2 255.255.255.252
+ no shutdown
+ no log-link-change
+ exit
+!
+interface tunnel171116
+ description POLKA tunnel from VIT0071[1] -> SPO0021[2] via RIO
+ tunnel vrf CORE
+ tunnel source loopback0
+ tunnel destination 10.16.16.16
+ tunnel domain-name 10.11.11.11
+ tunnel mode polka
+ vrf forwarding CORE
+ ipv4 address 30.17.16.1 255.255.255.252
+ no shutdown
+ log-link-change
+ exit
+!
+interface tunnel17114516
+ description POLKA tunnel from VIT0071[1] -> SPO0021[2] via RIO - MG
+ tunnel vrf CORE
+ tunnel source loopback0
+ tunnel destination 10.16.16.16
+ tunnel domain-name 10.11.11.11 10.45.45.45
+ tunnel mode polka
+ vrf forwarding CORE
+ ipv4 address 50.17.16.1 255.255.255.252
+ no shutdown
+ log-link-change
+ exit
+!
+interface tunnel174516
+ description POLKA tunnel from VIT0071[1] -> SPO0021[2] via MG
+ tunnel vrf CORE
+ tunnel source loopback0
+ tunnel destination 10.16.16.16
+ tunnel domain-name 10.45.45.45
+ tunnel mode polka
+ vrf forwarding CORE
+ ipv4 address 40.17.16.1 255.255.255.252
+ no shutdown
+ log-link-change
+ exit
+!
+router bgp6 1
+ vrf CORE
+ local-as 64512
+ router-id 10.17.17.17
+ no safe-ebgp
+ address-family unicast multicast vpnuni ovpnuni vpls evpn
+ neighbor fd00:51e5::a:8:8:8 remote-as 64512
+ neighbor fd00:51e5::a:8:8:8 local-as 64512
+ neighbor fd00:51e5::a:8:8:8 address-family unicast multicast vpnuni ovpnuni vpls evpn
+ neighbor fd00:51e5::a:8:8:8 distance 200
+ neighbor fd00:51e5::a:8:8:8 update-source loopback0
+ neighbor fd00:51e5::a:8:8:8 pmsitun
+ neighbor fd00:51e5::a:8:8:8 send-community all
+ redistribute connected
+ redistribute static
+ exit
+!
+proxy-profile oob
+ vrf oob
+ exit
+!
+tracker oob-nmaas
+ mode icmp
+ target 192.168.250.173
+ vrf oob
+ source tunnel123
+ interval 60000
+ timeout 300
+ start
+ exit
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ipv4 route oob 0.0.0.0 0.0.0.0 10.160.0.254
+ipv4 route oob 172.16.11.0 255.255.255.0 192.168.250.173
+ipv4 route oob 192.168.113.0 255.255.255.0 192.168.250.173
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+sensor ifaces-hw
+ path interfaces-hw/interface/counter
+ prefix freertr-ifaces
+ prepend iface_hw_byte_
+ command sho inter hwsumm
+ name 0 ifc=
+ key name interfaces-hw/interface
+ replace \. _
+ column 1 name st
+ column 1 replace admin -1
+ column 1 replace down 0
+ column 1 replace up 1
+ column 2 name tx
+ column 3 name rx
+ column 4 name dr
+ exit
+!
+sensor ifaces-hwp
+ path interfaces-hwp/interface/counter
+ prefix freertr-ifaces
+ prepend iface_hw_pack_
+ command sho inter hwpsumm
+ name 0 ifc=
+ key name interfaces-hwp/interface
+ replace \. _
+ column 1 name st
+ column 1 replace admin -1
+ column 1 replace down 0
+ column 1 replace up 1
+ column 2 name tx
+ column 3 name rx
+ column 4 name dr
+ exit
+!
+sensor ifaces-sw
+ path interfaces-sw/interface/counter
+ prefix freertr-ifaces
+ prepend iface_sw_byte_
+ command sho inter swsumm
+ name 0 ifc=
+ key name interfaces-sw/interface
+ replace \. _
+ column 1 name st
+ column 1 replace admin -1
+ column 1 replace down 0
+ column 1 replace up 1
+ column 2 name tx
+ column 3 name rx
+ column 4 name dr
+ exit
+!
+sensor ifaces-swp
+ path interfaces-swp/interface/counter
+ prefix freertr-ifaces
+ prepend iface_sw_pack_
+ command sho inter swpsumm
+ name 0 ifc=
+ key name interfaces-swp/interface
+ replace \. _
+ column 1 name st
+ column 1 replace admin -1
+ column 1 replace down 0
+ column 1 replace up 1
+ column 2 name tx
+ column 3 name rx
+ column 4 name dr
+ exit
+!
+sensor lsigp4metric
+ path lsigp4metric/peer/peer
+ prefix freertr-lsigp4metric
+ prepend lsigp4_metric_
+ command show ipv4 ospf 1 metric
+ name 0 proto="ospf1",ifc=
+ key name lsigp4metric/peer
+ replace \. _
+ column 4 name metric
+ exit
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+alias exec tna-set-profile sticky-param GEANT_TESTBED
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+server telnet oob-local
+ security protocol ssh
+ security authentication usr
+ security rsakey rsa
+ security dsakey dsa
+ security ecdsakey ecdsa
+ access-class allow-mgmt
+ port 22222
+ exec logging
+ no exec authorization
+ login authentication usr
+ login logging
+ interface ethernet1
+ vrf oob
+ exit
+!
+server telnet oob-nmaas
+ security protocol ssh
+ security authentication usr
+ security rsakey rsa
+ security dsakey dsa
+ security ecdsakey ecdsa
+ access-class ALLOW-NMAAS-BASTION
+ port 22222
+ exec logging
+ no exec authorization
+ login authentication usr
+ login logging
+ interface tunnel123
+ vrf oob
+ exit
+!
+server telnet p4
+ security protocol telnet
+ exec logging
+ no exec authorization
+ no login authentication
+ login logging
+ vrf p4
+ exit
+!
+server p4lang p4
+ export-vrf CORE
+ export-port sdn10 14 100 0 1 0
+ export-port sdn1201 36 10 0 0 0
+ export-port sdn1101 44 10 0 0 0
+ export-port sdn9 60 100 0 1 0
+ export-port sdn1001 128 10 0 0 0
+ export-port sdn1002 129 10 0 0 0
+ export-port sdn1003 130 10 0 0 0
+ export-port sdn1004 131 10 0 1 0
+ export-port tunnel171116 dynamic 100 0 0 0
+ export-port tunnel17114516 dynamic 100 0 0 0
+ export-port tunnel174516 dynamic 100 0 0 0
+ export-port tunnel1517 dynamic 100 0 0 0
+ interconnect ethernet0
+ vrf p4
+ exit
+!
+server http api
+ protocol tcp
+ host * path /
+ host * api exec config
+ interface sdn9
+ vrf CORE
+ exit
+!
+server prometheus pr
+ sensor ifaces-hw
+ sensor ifaces-hwp
+ sensor ifaces-sw
+ sensor ifaces-swp
+ sensor lsigp4metric
+ interface tunnel123
+ vrf oob
+ exit
+!
+client proxy oob
+client name-server 8.8.8.8
+client config-server http://wdv.rare.nmaas.eu/webdav/
+client config-username rare
+client config-password $v10$cmFyZQ==
+client config-backup
+client config-archive
+client time-server europe.pool.ntp.org
+client time-zone UTC
+!
+end
