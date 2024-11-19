@@ -6,6 +6,8 @@ from config_mq import config_rabbitmq, rabbitmq_host, rabbitmq_router_queue, rab
 import os
 from flask import Flask, request, render_template
 
+MAX_POINTS = 100
+
 if not config_rabbitmq(['ROUTER','CLIENT','TELEMETRY']):
     print("Error in config file.")
     exit()
@@ -44,6 +46,12 @@ def update_router():
     channel.queue_declare(queue=rabbitmq_router_queue(), durable=False)
     body = f"list;router;{CLIENT_QUEUE}"
     channel.basic_publish(exchange="", routing_key=rabbitmq_router_queue(), properties=pika.BasicProperties(expiration='10000',), body=body)
+    channel.close()
+    channel = connection.channel()
+    channel.queue_declare(queue=rabbitmq_telemetry_queue(), durable=False)
+    body = f"telemetry;get;{CLIENT_QUEUE};latency;*;*;-5m;1"
+    #[0]telemetry;[1]get;[2]<client-queue>;[3]latency;[4]<index-name>[5]<start-time>;[6]<end-time>;[7]<interval-in-seconds>
+    channel.basic_publish(exchange="", routing_key=rabbitmq_telemetry_queue(), properties=pika.BasicProperties(expiration='10000',), body=body)
 #    router = None
 #    router = request.args.get('router')
 #    if router:
@@ -102,14 +110,14 @@ def set_data(datalake, index, value, datatype):
     if item == None:
         c = 0
         item = []
-        while c < 100:
+        while c < MAX_POINTS:
             item.append('0')
             c=c+1
     c = 0
-    while c<99:
+    while c<(MAX_POINTS-1):
         item[c] = item[c+1];
         c = c+1
-    item[99] = value;
+    item[(MAX_POINTS-1)] = value;
     datalake.update( { index: item } )
     datakeys = list(datalake.keys())
     datakeys.sort()
@@ -123,7 +131,7 @@ def set_data(datalake, index, value, datatype):
     return
 
 def callback_telemetry(ch, method, properties, body):
-    # print(f" [#] Received {body.decode()}")
+    print(f" [*] Received {body.decode()}")
     params = body.decode().split(';')
     if len(params) > 0:
         command = params[0].strip()

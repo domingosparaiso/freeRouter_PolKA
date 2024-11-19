@@ -105,7 +105,13 @@ def callback_telemetry(ch, method, properties, body):
                 if len(params) >= 7:
                     client_queue = params[2].strip()
                     telemetry_type = params[3].strip()
+                    # * = all indexes
                     index_name = params[4].strip()
+                    # time values
+                    #    * = now
+                    #    -<val><time> = back in time, where val=number and time=h(hour),m(minute),s(second)
+                    #        ex: -3m  (now - 3 minutes)
+                    #            -40s (now - 40 seconds)
                     start_time = params[5].strip()
                     end_time = params[6].strip()
                     interval = params[7].strip()
@@ -140,6 +146,6 @@ channel.queue_declare(queue=rabbitmq_telemetry_queue(), durable=False)
 print(" [*] Waiting for messages on " + rabbitmq_telemetry_queue() + ". To exit press CTRL+C")
 
 channel.basic_qos(prefetch_count=1)
-channel.basic_consume(callback_telemetry, queue=rabbitmq_telemetry_queue())
+channel.basic_consume(on_message_callback=callback_telemetry, queue=rabbitmq_telemetry_queue())
 channel.start_consuming()
 
