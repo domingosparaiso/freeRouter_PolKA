@@ -37,16 +37,16 @@
 						</tr>
 					</table>
 				</td>
-				<td width=50% height=60%>
+				<!-- <td width=50% height=60%>
 					<div id='graph_bandwidth'></div>
+				</td> -->
+				<td width=50% height=60%>
+					<div id='graph_latency'></div>
 				</td>
 			</tr>
 			<tr>
-				<td width=50% height=30%>
-					<img src='static/topology.png' height=200>
-				</td>
-				<td width=50% height=30%>
-					<div id='graph_latency'></div>
+				<td colspan=2 width=100% height=30%>
+					<center><img src='static/topology.png' height=300></center>
 				</td>
 			</tr>
 		</table>
@@ -241,11 +241,13 @@ function settable(j, tabname) {
 	document.getElementById('div-' + tabname).innerHTML = result;
 }
 
+/*
 setInterval( function() {
 	fetch("/data-bandwidth")
 		.then((response) => response.json())
 		.then((json) => setdata(json, data_bandwidth, 'bandwidth'));
 	}, 2000);
+*/
 
 setInterval( function() {
 	fetch("/data-latency")
@@ -265,7 +267,7 @@ setInterval( function() {
 
 function changetab(tabname) {
 	if (selected_router == '') {
-		alert('Selecione um roteador.');
+		alert('Select a router from table.');
 		tabname = 'routers';
 	}
 	tab_active = tabname;
