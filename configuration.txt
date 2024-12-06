@@ -271,11 +271,22 @@ interface sdn1201
  exit
 !
 interface sdn9
- mtu 1500
+ mtu 9000
  macaddr 0001.2577.376c
  lldp enable
  vrf forwarding CORE
  ipv4 address 10.0.17.1 255.255.255.0
+ ipv4 pim enable
+ ipv4 pim bier-tunnel 17
+ ipv4 pim join-source loopback0
+ polka enable 17 65536 100
+ mpls enable
+ mpls rsvp4
+ router ospf4 1 enable
+ router ospf4 1 area 0
+ router ospf4 1 suppress-prefix
+ router ospf4 1 segrout index 17
+ router ospf4 1 bier index 17
  no shutdown
  no log-link-change
  exit
@@ -346,6 +357,19 @@ interface tunnel174516
  log-link-change
  exit
 !
+interface tunnel1751
+ description POLKA tunnel from VIT0071[=17]->FIU0001[51]
+ tunnel vrf CORE
+ tunnel source loopback0
+ tunnel destination 10.51.51.51
+ tunnel domain-name 10.11.11.11 10.16.16.16 10.15.15.15 10.23.23.23
+ tunnel mode polka
+ vrf forwarding CORE
+ ipv4 address 30.17.51.1 255.255.255.252
+ no shutdown
+ no log-link-change
+ exit
+!
 router bgp6 1
  vrf CORE
  local-as 64512
@@ -378,6 +402,7 @@ tracker oob-nmaas
  exit
 !
 !
+ipv4 route CORE 10.0.16.0 255.255.255.0 30.17.16.2 interface tunnel171116
 !
 !
 !
@@ -600,6 +625,7 @@ server p4lang p4
  export-port tunnel171116 dynamic 100 0 0 0
  export-port tunnel17114516 dynamic 100 0 0 0
  export-port tunnel1517 dynamic 100 0 0 0
+ export-port tunnel1751 dynamic 100 0 0 0
  interconnect ethernet0
  vrf p4
  exit
